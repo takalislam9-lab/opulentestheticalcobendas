@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicios | Opulent Esthetic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#faf6f3; --ink:#3d2b28; --dark:#2a1f1d; --rose:#b8867f; --muted:#6b4f4a;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;font-weight:300;}
+  a{text-decoration:none;color:inherit;}
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:500;}
+  img{max-width:100%;display:block;}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 6%;background:rgba(250,246,243,.95);backdrop-filter:blur(10px);box-shadow:0 2px 24px rgba(42,31,29,.08);}
+  .logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--dark);}
+  .logo .script{font-style:italic;color:var(--rose);}
+  nav ul{list-style:none;display:flex;gap:32px;}
+  nav a{font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;}
+  .nav-toggle{display:none;font-size:1.6rem;background:none;border:none;color:var(--dark);}
+
+  .page-hero{padding:170px 7% 60px;text-align:center;}
+  .page-hero span{color:var(--rose);text-transform:uppercase;letter-spacing:3px;font-size:.78rem;font-weight:500;}
+  .page-hero h1{font-size:clamp(2.2rem,5vw,3.2rem);font-style:italic;margin-top:14px;color:var(--dark);}
+  .page-hero p{color:var(--muted);max-width:560px;margin:18px auto 0;line-height:1.8;}
+
+  .tabs{position:sticky;top:84px;z-index:50;background:var(--cream);padding:18px 7% 24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;border-bottom:1px solid rgba(61,43,40,.1);}
+  .tab-btn{border:1px solid rgba(61,43,40,.25);background:transparent;padding:12px 24px;border-radius:30px;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.5px;color:var(--ink);cursor:pointer;transition:all .2s;}
+  .tab-btn.active,.tab-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose);}
+
+  .tab-panel{display:none;padding:60px 7% 100px;max-width:1200px;margin:0 auto;}
+  .tab-panel.active{display:block;}
+  .tab-intro{text-align:center;max-width:580px;margin:0 auto 46px;}
+  .tab-intro h2{font-size:1.9rem;font-style:italic;color:var(--dark);}
+  .tab-intro p{color:var(--muted);margin-top:10px;line-height:1.75;font-size:.92rem;}
+
+  .cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;}
+  .cat-grid.single{grid-template-columns:1fr;max-width:640px;margin:0 auto;}
+  .cat-card{position:relative;border-radius:16px;overflow:hidden;height:340px;cursor:pointer;}
+  .cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+  .cat-card:hover img{transform:scale(1.06);}
+  .cat-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(42,31,29,.85) 0%,rgba(42,31,29,.15) 55%,transparent 100%);}
+  .cat-card-text{position:absolute;bottom:0;left:0;right:0;padding:26px;z-index:2;}
+  .cat-card-text h3{color:#fff;font-size:1.5rem;font-style:italic;margin-bottom:10px;}
+  .cat-card-text span{color:#fff;font-size:.74rem;text-transform:uppercase;letter-spacing:1.5px;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:4px;}
+
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(42,31,29,.75);z-index:300;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--cream);max-width:540px;width:100%;max-height:85vh;overflow-y:auto;border-radius:16px;padding:40px;position:relative;}
+  .modal-close{position:absolute;top:18px;right:20px;background:none;border:none;font-size:1.6rem;color:var(--ink);cursor:pointer;}
+  .modal h3{font-size:1.7rem;font-style:italic;color:var(--dark);margin-bottom:6px;}
+  .modal .modal-sub{color:var(--muted);font-size:.84rem;margin-bottom:26px;}
+  .svc-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid rgba(61,43,40,.1);gap:16px;}
+  .svc-row:last-of-type{border-bottom:none;}
+  .svc-name{font-size:.92rem;color:var(--ink);}
+  .svc-dur{font-size:.74rem;color:var(--muted);display:block;margin-top:3px;}
+  .svc-price{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--rose);font-weight:600;white-space:nowrap;}
+  .modal-cta{display:block;text-align:center;background:var(--rose);color:#fff;padding:14px;border-radius:30px;margin-top:28px;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;}
+
+  footer{background:var(--dark);color:#d9c9c5;padding:50px 7% 26px;text-align:center;font-size:.8rem;}
+  footer a{color:var(--rose);}
+
+  .wa-fab{position:fixed;bottom:26px;right:26px;z-index:200;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(37,211,102,.45);}
+
+  @media(max-width:900px){
+    nav{position:fixed;top:0;right:0;height:100vh;width:78%;max-width:300px;background:var(--cream);flex-direction:column;padding:110px 40px;transform:translateX(100%);transition:transform .4s;box-shadow:-10px 0 40px rgba(0,0,0,.1);}
+    nav.open{transform:translateX(0);}
+    nav ul{flex-direction:column;gap:26px;}
+    .nav-toggle{display:block;}
+    .tabs{top:76px;overflow-x:auto;justify-content:flex-start;flex-wrap:nowrap;}
+    .tab-btn{flex-shrink:0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Opulent <span class="script">esthetic</span></a>
+  <nav id="nav">
+    <ul>
+      <li><a href="index.html#inicio">Inicio</a></li>
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="index.html#galeria">Galería</a></li>
+      <li><a href="index.html#opiniones">Opiniones</a></li>
+      <li><a href="index.html#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+  <button class="nav-toggle" id="navToggle">☰</button>
+</header>
+
+<div class="page-hero">
+  <span>Nuestro catálogo</span>
+  <h1>Servicios</h1>
+  <p>Organizados por categoría para que encuentres tu tratamiento en segundos. Toca una tarjeta para ver precios y duración.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="manos-pies">Manos y Pies</button>
+  <button class="tab-btn" data-tab="depilacion">Depilación</button>
+  <button class="tab-btn" data-tab="rostro">Rostro y Mirada</button>
+  <button class="tab-btn" data-tab="cuerpo-cabello">Cuerpo y Cabello</button>
+  <button class="tab-btn" data-tab="tatuajes">Eliminación de Tatuajes</button>
+</div>
+
+<!-- MANOS Y PIES -->
+<div class="tab-panel active" id="manos-pies">
+  <div class="tab-intro">
+    <h2>Manos y Pies</h2>
+    <p>Manicura rusa, pedicura, uñas acrílicas y diseños personalizados, con material higienizado en cada sesión.</p>
+  </div>
+  <div class="cat-grid single">
+    <div class="cat-card" onclick="openModal('m-unas')">
+      <img src="op_nails_2.webp" alt="Manicura en Opulent Esthetic">
+      <div class="cat-card-text"><h3>Uñas</h3><span>Ver servicios y precios</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DEPILACION -->
+<div class="tab-panel" id="depilacion">
+  <div class="tab-intro">
+    <h2>Depilación</h2>
+    <p>Con hilo, con cera o con láser: elige la técnica que mejor se adapta a tu piel.</p>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card" onclick="openModal('d-hilo')">
+      <img src="op_principal.webp" alt="Depilación con hilo">
+      <div class="cat-card-text"><h3>Con Hilo</h3><span>Ver servicios y precios</span></div>
+    </div>
+    <div class="cat-card" onclick="openModal('d-cera')">
+      <img src="op_nails_4.webp" alt="Depilación con cera">
+      <div class="cat-card-text"><h3>Con Cera</h3><span>Ver servicios y precios</span></div>
+    </div>
+    <div class="cat-card" onclick="openModal('d-laser')">
+      <img src="remove1.jpg" alt="Depilación láser corporal">
+      <div class="cat-card-text"><h3>Láser Pelo Cuerpo</h3><span>Ver servicios y precios</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROSTRO -->
+<div class="tab-panel" id="rostro">
+  <div class="tab-intro">
+    <h2>Rostro y Mirada</h2>
+    <p>Tratamientos faciales, micropigmentación y maquillaje profesional para toda ocasión.</p>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card" onclick="openModal('r-facial')">
+      <img src="op_silvia.webp" alt="Tratamiento facial en Opulent Esthetic">
+      <div class="cat-card-text"><h3>Estética Facial</h3><span>Ver servicios y precios</span></div>
+    </div>
+    <div class="cat-card" onclick="openModal('r-micro')">
+      <img src="svc_micro.jpg" alt="Micropigmentación de cejas">
+      <div class="cat-card-text"><h3>Micropigmentación</h3><span>Ver servicios y precios</span></div>
+    </div>
+    <div class="cat-card" onclick="openModal('r-maquillaje')">
+      <img src="op_cat_maquillaje.jpg" alt="Maquillaje profesional">
+      <div class="cat-card-text"><h3>Maquillaje</h3><span>Ver servicios y precios</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CUERPO Y CABELLO -->
+<div class="tab-panel" id="cuerpo-cabello">
+  <div class="tab-intro">
+    <h2>Cuerpo y Cabello</h2>
+    <p>Peluquería y tratamientos corporales para sentirte renovada de pies a cabeza.</p>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card" onclick="openModal('c-pelu')">
+      <img src="op_cat_pelu.jpg" alt="Peluquería en Opulent Esthetic">
+      <div class="cat-card-text"><h3>Peluquería</h3><span>Ver servicios y precios</span></div>
+    </div>
+    <div class="cat-card" onclick="openModal('c-corporal')">
+      <img src="op_cat_corporal.jpg" alt="Estética corporal">
+      <div class="cat-card-text"><h3>Estética Corporal</h3><span>Ver servicios y precios</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TATUAJES -->
+<div class="tab-panel" id="tatuajes">
+  <div class="tab-intro">
+    <h2>Eliminación de Tatuajes</h2>
+    <p>Tecnología láser profesional para eliminar o aclarar tatuajes de forma segura y progresiva.</p>
+  </div>
+  <div class="cat-grid single">
+    <div class="cat-card" onclick="openModal('t-tatuajes')">
+      <img src="remove2.jpg" alt="Eliminación de tatuajes con láser">
+      <div class="cat-card-text"><h3>Eliminación de Tatuajes</h3><span>Ver servicios y precios</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-m-unas">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('m-unas')">&times;</button>
+    <h3>Uñas</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Manicura permanente</div><span class="svc-dur">1h</span></div><div class="svc-price">22€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Manicura natural</div><span class="svc-dur">45min</span></div><div class="svc-price">20€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Pedicura natural</div><span class="svc-dur">1h</span></div><div class="svc-price">35€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Uñas cortas con acrílico y esmaltado</div><span class="svc-dur">1h 30min</span></div><div class="svc-price">35€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Alargamiento de uñas acrílicas con esmaltado</div><span class="svc-dur">2h</span></div><div class="svc-price">50€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-d-hilo">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('d-hilo')">&times;</button>
+    <h3>Depilación con Hilo</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Cejas con hilo</div><span class="svc-dur">10min</span></div><div class="svc-price">15€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Cejas & labio con hilo</div><span class="svc-dur">15min</span></div><div class="svc-price">24€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Labio superior con hilo</div><span class="svc-dur">5min</span></div><div class="svc-price">9€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Barbilla con hilo</div><span class="svc-dur">10min</span></div><div class="svc-price">9€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Cara completa con hilo</div><span class="svc-dur">30min</span></div><div class="svc-price">38€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-d-cera">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('d-cera')">&times;</button>
+    <h3>Depilación con Cera</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Axilas</div><span class="svc-dur">15min</span></div><div class="svc-price">18€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Cejas con cera</div><span class="svc-dur">15min</span></div><div class="svc-price">15€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Pecho con cera</div><span class="svc-dur">30min</span></div><div class="svc-price">20€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Piernas enteras con cera</div><span class="svc-dur">45min</span></div><div class="svc-price">50€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Ingles pubis con cera</div><span class="svc-dur">20min</span></div><div class="svc-price">15€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-d-laser">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('d-laser')">&times;</button>
+    <h3>Láser Pelo Cuerpo</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Axilas láser</div><span class="svc-dur">20min</span></div><div class="svc-price">35€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Brazos enteros láser</div><span class="svc-dur">35min</span></div><div class="svc-price">50€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Ingles láser</div><span class="svc-dur">30min</span></div><div class="svc-price">33€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-r-facial">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('r-facial')">&times;</button>
+    <h3>Estética Facial</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Mesoterapia Dermapen facial</div><span class="svc-dur">20min</span></div><div class="svc-price">30€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Dermapen facial con bono</div><span class="svc-dur">30min</span></div><div class="svc-price">40€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Planchado de cejas</div><span class="svc-dur">1h</span></div><div class="svc-price">50€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Tinte de cejas y pestañas</div><span class="svc-dur">20min</span></div><div class="svc-price">25€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Laminado de cejas</div><span class="svc-dur">2h</span></div><div class="svc-price">50€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-r-micro">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('r-micro')">&times;</button>
+    <h3>Micropigmentación</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Aclarar cejas de micropigmentación</div><span class="svc-dur">20min</span></div><div class="svc-price">80€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Microblading cejas pelo a pelo</div><span class="svc-dur">2h</span></div><div class="svc-price">300€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Micropigmentación cejas completas</div><span class="svc-dur">2h</span></div><div class="svc-price">250€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Perfilado y difuminado de labios</div><span class="svc-dur">2h</span></div><div class="svc-price">300€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Areolas</div><span class="svc-dur">1h</span></div><div class="svc-price">300€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-r-maquillaje">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('r-maquillaje')">&times;</button>
+    <h3>Maquillaje</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Maquillaje de día</div><span class="svc-dur">1h</span></div><div class="svc-price">35€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Maquillaje cóctel - social</div><span class="svc-dur">1h</span></div><div class="svc-price">45€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Maquillaje de noche</div><span class="svc-dur">1h 15min</span></div><div class="svc-price">50€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-c-pelu">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('c-pelu')">&times;</button>
+    <h3>Peluquería</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Alisado Sweet profesional</div><span class="svc-dur">3h</span></div><div class="svc-price">210€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Corto</div><span class="svc-dur">3h</span></div><div class="svc-price">150€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Medio</div><span class="svc-dur">4h 30min</span></div><div class="svc-price">250€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Largo</div><span class="svc-dur">5h 30min</span></div><div class="svc-price">350€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-c-corporal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('c-corporal')">&times;</button>
+    <h3>Estética Corporal</h3>
+    <p class="modal-sub">Servicios más populares</p>
+    <div class="svc-row"><div><div class="svc-name">Electroestimulación</div><span class="svc-dur">45min</span></div><div class="svc-price">50€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Maderoterapia</div><span class="svc-dur">45min</span></div><div class="svc-price">60€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Presoterapia corporal</div><span class="svc-dur">45min</span></div><div class="svc-price">40€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Masaje reductor</div><span class="svc-dur">1h</span></div><div class="svc-price">80€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Masaje corporal relajante</div><span class="svc-dur">45min</span></div><div class="svc-price">45€</div></div>
+    <a class="modal-cta" href="https://booksy.com/es-es/18617_opulent-esthetic_cuidado-de-la-piel_52925_alcobendas" target="_blank" rel="noopener">Reservar en Booksy →</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-t-tatuajes">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('t-tatuajes')">&times;</button>
+    <h3>Eliminación de Tatuajes</h3>
+    <p class="modal-sub">Precio según tamaño</p>
+    <div class="svc-row"><div><div class="svc-name">Tatuaje pequeño</div><span class="svc-dur">30min</span></div><div class="svc-price">60€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Tatuaje mediano</div><span class="svc-dur">30min</span></div><div class="svc-price">90€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Tatuaje grande</div><span class="svc-dur">30min</span></div><div class="svc-price">150€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Tatuaje extra grande</div><span class="svc-dur">1h</span></div><div class="svc-price">200€</div></div>
+    <div class="svc-row"><div><div class="svc-name">Tatuaje ceja micro</div><span class="svc-dur">45min</span></div><div class="svc-price">90€</div></div>
+    <a class="modal-cta" href="https://wa.me/34674011801?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20eliminaci%C3%B3n%20de%20tatuajes" target="_blank" rel="noopener">Consultar por WhatsApp →</a>
+  </div>
+</div>
+
+<footer>
+  <p>Opulent Esthetic — Carr. de Fuencarral 44, Edificio 2, 103A, 28108 Alcobendas · +34 629 93 85 25 · <a href="https://www.instagram.com/opulentestheticmadrid" target="_blank" rel="noopener">@opulentestheticmadrid</a></p>
+</footer>
+
+<a class="wa-fab" href="https://wa.me/34674011801?text=Hola%2C%20quiero%20reservar%20una%20cita%20en%20Opulent%20Esthetic" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 32 32" fill="white"><path d="M16.001 3C9.373 3 4 8.373 4 15.001c0 2.386.702 4.605 1.912 6.472L4 29l7.727-1.878A11.94 11.94 0 0 0 16.001 27C22.629 27 28 21.629 28 15.001 28 8.373 22.629 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.114 1.15-4.47-.232-.367a9.8 9.8 0 0 1-1.5-5.219c0-5.421 4.412-9.833 9.833-9.833s9.833 4.412 9.833 9.833-4.412 9.833-9.833 9.833zm5.38-7.36c-.294-.148-1.741-.859-2.011-.957-.27-.098-.467-.148-.663.148-.196.294-.76.957-.932 1.153-.172.196-.343.221-.637.074-.294-.148-1.242-.458-2.366-1.462-.874-.78-1.464-1.744-1.636-2.038-.172-.294-.018-.453.13-.6.133-.133.294-.343.441-.515.147-.172.196-.294.294-.49.098-.196.049-.368-.025-.515-.074-.148-.663-1.6-.909-2.19-.24-.575-.484-.497-.663-.506l-.564-.01c-.196 0-.515.074-.784.368-.27.294-1.03 1.007-1.03 2.456s1.055 2.85 1.202 3.046c.147.196 2.077 3.17 5.033 4.445.703.303 1.252.484 1.68.619.706.225 1.348.193 1.855.117.566-.085 1.741-.712 1.987-1.4.245-.688.245-1.278.172-1.4-.074-.123-.27-.196-.564-.344z"/></svg>
+</a>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const nav = document.getElementById('nav');
+  toggle.addEventListener('click', () => nav.classList.toggle('open'));
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  function activateTabFromHash(){
+    const hash = window.location.hash.replace('#','');
+    const btn = document.querySelector('.tab-btn[data-tab="'+hash+'"]');
+    if(btn) btn.click();
+  }
+  window.addEventListener('DOMContentLoaded', activateTabFromHash);
+
+  function openModal(id){ document.getElementById('modal-'+id).classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(id){ document.getElementById('modal-'+id).classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('.modal-overlay').forEach(ov => {
+    ov.addEventListener('click', e => { if(e.target === ov){ ov.classList.remove('open'); document.body.style.overflow=''; } });
+  });
+</script>
+
+</body>
+</html>
