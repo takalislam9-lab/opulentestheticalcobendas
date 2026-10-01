@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--cream:#faf6f3; --ink:#3d2b28; --dark:#2a1f1d; --rose:#b8867f; --muted:#6b4f4a;}
+  :root{--cream:#faf6f3; --ink:#3d2b28; --dark:#2a1f1d; --rose:#b8867f; --muted:#6b4f4a; --gold:#c9a44c;}
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;font-weight:300;}
@@ -16,8 +16,9 @@
   img{max-width:100%;display:block;}
 
   header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 6%;background:rgba(250,246,243,.95);backdrop-filter:blur(10px);box-shadow:0 2px 24px rgba(42,31,29,.08);}
-  .logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--dark);}
-  .logo .script{font-style:italic;color:var(--rose);}
+  .logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--dark);display:flex;align-items:center;gap:10px;}
+  .logo .script{font-style:italic;color:var(--gold);}
+  .logo-mark{flex-shrink:0;}
   nav ul{list-style:none;display:flex;gap:32px;}
   nav a{font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;}
   .nav-toggle{display:none;font-size:1.6rem;background:none;border:none;color:var(--dark);}
@@ -83,7 +84,18 @@
 <body>
 
 <header>
-  <a href="index.html" class="logo">Opulent <span class="script">esthetic</span></a>
+  <a href="index.html" class="logo">
+    <svg class="logo-mark" width="28" height="28" viewBox="0 0 40 40" fill="none" style="color:var(--gold)">
+      <g stroke="currentColor" stroke-width="1.2">
+        <ellipse cx="20" cy="20" rx="7" ry="15"/>
+        <ellipse cx="20" cy="20" rx="7" ry="15" transform="rotate(45 20 20)"/>
+        <ellipse cx="20" cy="20" rx="7" ry="15" transform="rotate(90 20 20)"/>
+        <ellipse cx="20" cy="20" rx="7" ry="15" transform="rotate(135 20 20)"/>
+      </g>
+      <path d="M20 13 L22.2 17.8 L27 20 L22.2 22.2 L20 27 L17.8 22.2 L13 20 L17.8 17.8 Z" fill="currentColor"/>
+    </svg>
+    Opulent <span class="script">esthetic</span>
+  </a>
   <nav id="nav">
     <ul>
       <li><a href="index.html#inicio">Inicio</a></li>
