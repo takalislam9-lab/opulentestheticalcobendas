@@ -303,9 +303,29 @@
   </div>
   <div class="footer-bottom">
     <span>© 2026 Opulent Esthetic — Todos los derechos reservados</span>
-    <span>Diseñado con ✦ para quienes se cuidan</span>
+    <span><a href="aviso-legal.html" style="color:#8a7873;">Aviso Legal</a> &middot; <a href="politica-privacidad.html" style="color:#8a7873;">Privacidad</a> &middot; <a href="politica-cookies.html" style="color:#8a7873;">Cookies</a></span>
   </div>
 </footer>
+
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--dark);padding:20px 7%;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;">
+  <p style="font-family:'Jost',sans-serif;font-size:.8rem;font-weight:300;color:rgba(245,237,232,.85);line-height:1.7;max-width:680px;">
+    Esta web utiliza cookies de terceros (Google Maps) para ofrecerte la mejor experiencia. Puedes aceptar su uso o rechazarlas.
+    <a href="politica-cookies.html" style="color:var(--gold);text-decoration:underline;">Más información</a>
+  </p>
+  <div style="display:flex;gap:12px;flex-shrink:0;">
+    <button onclick="setOpulentCookie('rejected')" style="font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;padding:12px 26px;background:transparent;color:rgba(245,237,232,.7);border:1px solid rgba(245,237,232,.3);cursor:pointer;">Rechazar</button>
+    <button onclick="setOpulentCookie('accepted')" style="font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;padding:12px 26px;background:var(--rose);color:#fff;border:1px solid var(--rose);cursor:pointer;">Aceptar</button>
+  </div>
+</div>
+<script>
+  function setOpulentCookie(val) {
+    localStorage.setItem('opulent_cookies', val);
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+  if (!localStorage.getItem('opulent_cookies')) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  }
+</script>
 
 <div class="social-fabs">
   <a class="fb-fab" href="https://www.facebook.com/profile.php?id=100070763391477" target="_blank" rel="noopener" aria-label="Visitar Facebook">
